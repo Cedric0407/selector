@@ -1,25 +1,38 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
+  "manifest_version": 3,
+  "name": "Sélectionneur d'élément",
+  "version": "1.0",
+  "description": "Cette extension permet de sélectionner un élément sur une page web",
+  "permissions": [
+    "tabs",
+    "activeTab",
+     "scripting",
+     "storage"
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "./images/logo24.png",
+      "32": "./images/logo24.png",
+      "48": "./images/logo24.png",
+      "128": "./images/logo512.png",
+      "256": "./images/logo512.png",
+      "512": "./images/logo512.png"
+    }
+  },
+  "web_accessible_resources": [
+        {
+          "resources": [
+            "images/logo512.png"
+          ],
+          "matches": ["<all_urls>"]
+        }
+    ]
 }

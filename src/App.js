@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+/*global chrome*/
+
+import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
+import { ACTIONS } from './constants';
 
 function App() {
+  const [isSelectionModeActive, setIsSelectionModeActive] = useState(false);
+
+  useEffect(() => {
+    chrome.storage.local.get(['selectionModeActive'], (result) => {
+      if (result.selectionModeActive !== undefined) {
+        setIsSelectionModeActive(result.selectionModeActive);
+      }
+    });
+  }, []);
+
+  const toggleSelectionMode = () => {
+    const newStatus = !isSelectionModeActive;
+    setIsSelectionModeActive(newStatus);
+    chrome.storage.local.set({ selectionModeActive: newStatus }, () => {
+      chrome.runtime.sendMessage({ action: newStatus ? ACTIONS.ENABLE_SELECTION_MODE : ACTIONS.DISABLE_SELECTION_MODE });
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="popup-container container text-center mt-4">
+
+      <img src="/images/logo512.png" alt="alt" className="w-25" />
+      <h1 className="mb-4">Sélectionneur d&apos;élément</h1>
+      <button
+        className={`btn ${isSelectionModeActive ? 'btn-danger' : 'btn-primary'} btn-lg`}
+        onClick={toggleSelectionMode}
+      >
+        {isSelectionModeActive ? 'Désactiver' : 'Activer'}
+      </button>
     </div>
   );
 }
